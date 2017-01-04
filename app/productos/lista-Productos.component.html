@@ -1,0 +1,69 @@
+
+<!--template de resultados filtrados-->
+<div class="panel-primary">   
+    <div class="panel-heading">
+        {{ tituloPagina }}
+    </div>
+    <div class="panel-body">
+        <div class="col-md-3">filtrado por...</div>
+        <div class="col-md-4">
+            <input type="text"
+                [(ngModel)] = 'listaFiltrada'
+            />
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                <h2>filtrado bajo el siguiente páramentro
+                    de búsqueda : {{listaFiltrada}}
+                </h2>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table"
+            *ngIf='productos && productos.length'>
+                <thead>
+                    <tr>
+                        <th>
+                            <button class="btn-primary"
+                                (click)='moverImagen()'>
+                                <!--lambdas, bellos lambdas -->
+                                {{mostrarImagen ? 'ocultar ' : 'mostrar'}}
+                                imágenes
+                                
+                            </button>
+                        </th>
+                        <th>producto</th>
+                        <th>código</th>
+                        <th>disponibilidad</th>
+                        <th>precio</th>
+                        <th>valoración</th>    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor = 'let producto of productos | filtroProducto: listaFiltrada'>
+                        <td>
+                            <img *ngIf= 'mostrarImagen' 
+                             [src]='producto.imageUrl'
+                            [title] = 'producto.productName'
+                            [style.width.px]= 'imageWidth'
+                            [style.margin.px] = 'imageMargin'
+                            >
+                        </td>
+                        <td>{{producto.productName}}</td>
+                        <td>{{producto.productCode | lowercase}}</td>
+                        <td>{{producto.releaseDate}}</td>
+                        <td>{{producto.price | currency : 'USD': true:'1.3-3' }}</td>
+                        <td>
+                            <ai-star [rating] = 'producto.starRating'
+                            (ratingClicked)= 'onRatingClicked($event)'>
+                            </ai-star>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
